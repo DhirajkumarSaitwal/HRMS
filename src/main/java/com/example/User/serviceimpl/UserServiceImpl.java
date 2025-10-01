@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
      //
-        auditLogService.logEvent(user.getUsername(), "LOGIN");
+       // auditLogService.logEvent(user.getUsername(), "LOGIN");
 
         return userRepository.save(user);
     }
