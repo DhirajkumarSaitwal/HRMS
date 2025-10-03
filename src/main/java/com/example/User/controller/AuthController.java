@@ -81,10 +81,11 @@ public class AuthController {
     }
 
     //Implement Audit
+    //editing by rohit
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
         String username = jwtUtil.extractUsernameFromRequest(request);
-        auditLogService.logEvent(username, "LOGOUT");
+        userService.logout(username);
         return ResponseEntity.ok("Logged out successfully");
     }
 

@@ -18,4 +18,7 @@ public interface UserService {
     User registerManager(User user);
     User registerEmployee(User user);
     User registerFinance(User user);
+    //edit by rohit
+    void logout(String username);
+
 }
