@@ -21,7 +21,7 @@ public class AuditLog {
 
     @NotBlank
     @Size(min = 3, max = 50)
-    @Column(unique = true, nullable = false)
+    @Column(unique = false, nullable = false)
     private String username;
 
     // LOGIN, LOGOUT, PASSWORD_CHANGE

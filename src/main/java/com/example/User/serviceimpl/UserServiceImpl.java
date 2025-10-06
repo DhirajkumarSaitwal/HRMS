@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
      //
-        auditLogService.logEvent(user.getUsername(), "LOGIN");
+       // auditLogService.logEvent(user.getUsername(), "LOGIN");
 
         return userRepository.save(user);
     }
@@ -93,15 +93,19 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    // LogOut--> changePassword
-    public void changePassword(String username, String newPassword) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        user.setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(user);
-
-        auditLogService.logEvent(username, "PASSWORD_CHANGE");
-    }
+//    // LogOut--> changePassword
+//    public void changePassword(String username, String newPassword) {
+//        User user = userRepository.findByUsername(username)
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+//        user.setPassword(passwordEncoder.encode(newPassword));
+//        userRepository.save(user);
+//
+//        auditLogService.logEvent(username, "PASSWORD_CHANGE");
+//    }
+@Override
+public void logout(String username) {
+    auditLogService.logEvent(username, "LOGOUT");
+}
 
     // Register HR
     public User registerHr(User user) {

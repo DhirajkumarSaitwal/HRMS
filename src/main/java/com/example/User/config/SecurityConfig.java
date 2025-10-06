@@ -1,5 +1,7 @@
-package com.example.User.security;
+package com.example.User.config;
 
+import com.example.User.security.CustomUserDetailsService;
+import com.example.User.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -52,7 +54,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login", "/api/auth/superadmin").permitAll()
+                        .requestMatchers("/api/auth/login", "/api/auth/superadmin","/api/auth/requestOtp","/api/auth/resetPassword").permitAll()
                         .requestMatchers("/auth/admin/**").hasRole("ADMIN")
                         .requestMatchers("/auth/hr/**").hasRole("HR")
                         .requestMatchers("/auth/manager/**").hasRole("MANAGER")
@@ -71,4 +73,6 @@ public class SecurityConfig {
 
         return http.build();
     }
+    //added becouse we need all employee related to manager
+
 }
