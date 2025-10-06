@@ -2,8 +2,10 @@ package com.example.User.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDateTime;
 
 @Setter
@@ -19,16 +21,28 @@ public class AuditLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long auditLogId;
 
-    @NotBlank
-    @Size(min = 3, max = 50)
-    @Column(unique = false, nullable = false)
-    private String username;
 
-    // LOGIN, LOGOUT, PASSWORD_CHANGE
+    @NotBlank
+    @Column(nullable = false)
+    private String username= "SYSTEM";
+
     @Column(nullable = false)
     private String action;
 
+ // this Two entity added new
+    @Column(nullable = false)
+    private String performedBy;  // username
+
+    @Column(nullable = false)
+    private String details;
+
     @Column(nullable = false)
     private LocalDateTime timestamp = LocalDateTime.now();
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
 }
