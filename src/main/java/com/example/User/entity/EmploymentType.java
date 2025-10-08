@@ -1,5 +1,5 @@
 package com.example.User.entity;
-//created bt hamad task2
+//created by hamad task
 
 public enum EmploymentType {
     FULL_TIME,

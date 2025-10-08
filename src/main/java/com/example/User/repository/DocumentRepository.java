@@ -6,9 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface DocumentRepository extends JpaRepository<Document, Long> {
-    List<Document> findByEmployeeId(Long employeeId);
-    List<Document> findByStatus(String uploadedBy);
 
+    List<Document> findByEmployee_EmployeeId(Long employeeId);
+    List<Document> findByStatus(String uploadedBy);
     Document findByDocumentId(Long documentId);
-    // Void  findByDocumentId(Long documentId);
+    List<Document> findByEmployeeIdInAndDocumentTypeIn(List<Long> employeeIds, List<String> documentTypes);
+
+
+
+
 }
+

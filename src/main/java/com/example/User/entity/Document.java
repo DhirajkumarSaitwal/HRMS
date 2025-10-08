@@ -1,6 +1,10 @@
 package com.example.User.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -23,8 +27,11 @@ public class Document {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long documentId;
 
-    @Column(nullable = false)
-    private Long employeeId; // FK to Employee table
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", nullable = false)
+    @JsonBackReference
+    private Employee employee;   // instead of just employeeId
 
     @Column(length = 50, nullable = false)
     private String documentType;
@@ -57,13 +64,7 @@ public class Document {
     @UpdateTimestamp
     private LocalDateTime verifiedAt;
 
-//    @PrePersist
-//    public void onUpload() {
-//        this.uploadedAt = LocalDateTime.now();
-//        if (this.status == null) {
-//            this.status = DocumentStatus.PENDING;
-//        }
-   // }
+
 
     // Getters & Setters
 }

@@ -19,5 +19,9 @@ public interface DocumentService {
     void deleteDocument(Long documentId);
 
     void deleteDocumentsByEmployeeId(Long employeeId);
+
+    List<Document> getDocumentsForManager(Long managerId);
+
+    Document getDocumentById(Long id) throws IOException;
 }
 

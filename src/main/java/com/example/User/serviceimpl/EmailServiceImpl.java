@@ -12,7 +12,7 @@ public class EmailServiceImpl implements EmailService {
     private JavaMailSender mailSender;
 
     @Override
-    public void sendEmail(String to, String subject, String body) {
+    public  void sendEmail(String to, String subject, String body) {
         // Implement JavaMailSender logic here
         System.out.println("Sending email to " + to + " : " + body);
         SimpleMailMessage message = new SimpleMailMessage();

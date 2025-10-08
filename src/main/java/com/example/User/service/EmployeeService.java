@@ -24,11 +24,7 @@ public interface EmployeeService {  // created by hamad task2
 
     Employee findByEmail(String email);
 
-    //List<Employee> getTeamMembers(Long managerId);
-
-    //added becouse need all employee associted by manager
     List<Employee> getTeamMembers(Long managerId);
-    //Long getLoggedInEmployeeId(Authentication authentication);
 
     List<Employee> getEmployeesUnderManager(Long managerId);
 }

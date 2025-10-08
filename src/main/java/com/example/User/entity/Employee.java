@@ -1,13 +1,18 @@
 package com.example.User.entity;
 
 //import com.example.User.enums.EmploymentType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "employees")
 @Data
@@ -51,16 +56,6 @@ public class Employee {    //created by hamad task2
 
     private String status = "ACTIVE";
 
-    //Reporting Manager (linked to User table)
-//    @ManyToOne
-//    @JoinColumn(name = "reporting_manager_id", referencedColumnName = "id", nullable = true)
-//    private User reportingManager;
-//
-//    // HR Business Partner (linked to User table)
-//    @ManyToOne
-//    @JoinColumn(name = "hrbp_id", referencedColumnName = "id")
-//    private User hrbp;
-
 
     // Reporting Manager (linked to User table)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -80,5 +75,20 @@ public class Employee {    //created by hamad task2
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public String getName() {
+        return firstName + (lastName != null ? " " + lastName : "");
+    }
+
+//    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Document> documents = new ArrayList<>();
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Document> documents;
+
+    public Long getId() {
+        return employeeId;
+    }
 }
 
