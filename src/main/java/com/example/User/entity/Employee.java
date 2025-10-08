@@ -1,8 +1,9 @@
 package com.example.User.entity;
 
 //import com.example.User.enums.EmploymentType;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "employees")
@@ -58,8 +61,6 @@ public class Employee {    //created by hamad task2
 
     private String status = "ACTIVE";
 
-    //Reporting Manager (linked to User table)
-    
     // Reporting Manager (linked to User table)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reporting_manager_id", referencedColumnName = "id",nullable = false)
@@ -74,23 +75,25 @@ public class Employee {    //created by hamad task2
     @NotNull(message = "HRBP is required")
     private User hrbp;
 
-
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    //added for
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private User user;
-
-    public Long getEmployeeId() {
-
-        return employeeId;
+    public String getName() {
+        return firstName + (lastName != null ? " " + lastName : "");
     }
 
+//    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Document> documents = new ArrayList<>();
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Document> documents;
+
+    public Long getId() {
+        return employeeId;
+    }
 }
 

@@ -57,10 +57,21 @@ public Employee createEmployee(Employee employee) {
         employeeRepository.deleteById(employeeId);
     }
 
-@Override
-public Optional<Employee> getEmployeeById(Long employeeId) {
-    return employeeRepository.findById(employeeId);
-}
+    @Override
+    public Optional<Employee> getEmployeeById(Long employeeId) {
+        return employeeRepository.findById(employeeId);
+    }
+
+    @Override
+    public List<Employee> getAllEmployees() {
+        return employeeRepository.findAll();
+    }
+
+    @Override
+    public List<Employee> getTeamMembers(Long managerId) {
+        return employeeRepository.findByReportingManagerId(managerId);
+    }
+
 
     @Override
     public List<Employee> searchEmployees(String name, String email, String department, String designation) {

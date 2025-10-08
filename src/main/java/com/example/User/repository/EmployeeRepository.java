@@ -42,6 +42,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query(value = "SELECT * FROM employees WHERE reporting_manager_id = :managerId", nativeQuery = true)
     List<Employee> findByManagerId(Long managerId);
 
-    //List<Employee> findByReportingManager_Id(Long managerId);
-    List<Employee> findByReportingManager_Id(Long managerId);
+
 }
