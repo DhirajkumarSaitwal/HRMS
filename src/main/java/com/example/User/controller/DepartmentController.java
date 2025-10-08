@@ -3,6 +3,7 @@ package com.example.User.controller;
 import com.example.User.dto.DepartmentCreateDto;
 import com.example.User.dto.DepartmentResponseDto;
 import com.example.User.dto.DepartmentUpdateDto;
+import com.example.User.entity.DepartmentStatus;
 import com.example.User.service.DepartmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/departments")
@@ -70,6 +73,29 @@ public class DepartmentController {
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {
         departmentService.softDeleteDepartment(id);
         return ResponseEntity.ok("Department deactivated successfully");
+    }
+
+    // Added new
+    // Search Departments by name or code
+    @GetMapping("/search")
+    public ResponseEntity<List<DepartmentResponseDto>> searchDepartments(
+            @RequestParam(required = false) String query,
+            @RequestParam(required = false) DepartmentStatus status) {
+
+        if (query != null && status != null) {
+            // Search + Filter both
+            return ResponseEntity.ok(departmentService.searchDepartmentsByStatus(query, status));
+        } else if (query != null) {
+            // Only Search
+            return ResponseEntity.ok(departmentService.searchDepartments(query));
+        } else if (status != null) {
+            // Only Filter
+            return ResponseEntity.ok(departmentService.filterDepartmentsByStatus(status));
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
+
     }
 
 

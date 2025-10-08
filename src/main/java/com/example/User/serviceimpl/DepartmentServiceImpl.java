@@ -1,4 +1,5 @@
 package com.example.User.serviceimpl;
+
 import com.example.User.dto.DepartmentCreateDto;
 import com.example.User.dto.DepartmentResponseDto;
 import com.example.User.dto.DepartmentUpdateDto;
@@ -15,7 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
@@ -28,6 +32,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Autowired
     private AuditLogService auditLogService;
+
 
     private void saveAudit(String action, String details) {
         AuditLog log = new AuditLog();
@@ -113,11 +118,10 @@ public class DepartmentServiceImpl implements DepartmentService {
 
         Department saved = departmentRepository.save(dept);
 
-         saveAudit("DEPARTMENT_UPDATED", "Updated Department: " + saved.getName());
+        saveAudit("DEPARTMENT_UPDATED", "Updated Department: " + saved.getName());
 
         return mapToDto(saved);
     }
-
 
 
     // get BYID
@@ -128,7 +132,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 
         return mapToDto(department);
     }
-
 
 
     @Override
@@ -159,4 +162,54 @@ public class DepartmentServiceImpl implements DepartmentService {
 
         saveAudit("DEPARTMENT_DELETED", "Deleted: " + d.getName());
     }
+
+
+// Added new API
+
+    @Override
+    public List<DepartmentResponseDto> searchDepartments(String query) {
+        return departmentRepository.searchDepartments(query)
+                .stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DepartmentResponseDto> filterDepartmentsByStatus(DepartmentStatus status) {
+        return departmentRepository.findByStatus(status)
+                .stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DepartmentResponseDto> searchDepartmentsByStatus(String query, DepartmentStatus status) {
+        return departmentRepository.searchDepartmentsByStatus(query, status)
+                .stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public DepartmentResponseDto updateDepartmentStatus(Long id, String status, String performedBy) {
+        Department department = departmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Department not found with id " + id));
+
+        DepartmentStatus newStatus = DepartmentStatus.valueOf(status.toUpperCase());
+        department.setStatus(newStatus);
+        department.setUpdatedAt(LocalDateTime.now());
+
+        departmentRepository.save(department);
+
+        auditLogService.saveAudit(
+                performedBy,
+                "DEPARTMENT_STATUS_UPDATE",
+                "Department '" + department.getName() + "' status changed to " + newStatus
+        );
+
+        return mapToDto(department);
+    }
+
+
 }
