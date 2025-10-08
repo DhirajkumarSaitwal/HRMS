@@ -73,4 +73,6 @@ public class SecurityConfig {
 
         return http.build();
     }
+    //added becouse we need all employee related to manager
+
 }
