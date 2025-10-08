@@ -4,6 +4,7 @@ package com.example.User.serviceimpl;
 import com.example.User.entity.Employee;
 import com.example.User.entity.EmploymentType;
 import com.example.User.entity.User;
+import com.example.User.exception.ResourceNotFoundException;
 import com.example.User.repository.EmployeeRepository;
 import com.example.User.repository.UserRepository;
 import com.example.User.service.EmployeeService;
@@ -22,13 +23,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private UserRepository userRepository;
-    //@Autowired
-    //private EmploymentType employmentType
 
-//    @Override
-//    public Employee createEmployee(Employee employee) {
-//        return employeeRepository.save(employee);
-//    }
 @Override
 public Employee createEmployee(Employee employee) {
     if (employee.getReportingManager() != null && employee.getReportingManager().getId() != null) {
@@ -62,47 +57,10 @@ public Employee createEmployee(Employee employee) {
         employeeRepository.deleteById(employeeId);
     }
 
-    @Override
-    public Optional<Employee> getEmployeeById(Long employeeId) {
-        return employeeRepository.findById(employeeId);
-    }
-
-    @Override
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
-    }
-    //added becouse need all employee related manager
-    @Override
-    public List<Employee> getTeamMembers(Long managerId) {
-        return employeeRepository.findByReportingManagerId(managerId);
-    }
-
-//    @Override
-//    public Long getLoggedInEmployeeId(Authentication authentication) {
-//
-//            String email = null;
-//            Object principal = authentication.getPrincipal();
-//
-//            if (principal instanceof UserDetails) {
-//                email = ((UserDetails) principal).getUsername();
-//            } else if (principal instanceof String) {
-//                email = (String) principal;
-//            }
-//
-//            Employee employee = employeeRepository.findByEmail(email);
-//            return employee.getId();
-//
-//    }
-
-    //    @Override
-//    public Long getLoggedInEmployeeId(Authentication authentication) {
-//        // Example if you store email as username
-//        String email = authentication.name();
-//        Employee employee = employeeRepository.findByEmail(email);
-//        return employee != null ? employee.getEmployeeId() : null;
-//    }
-
-    //-------------
+@Override
+public Optional<Employee> getEmployeeById(Long employeeId) {
+    return employeeRepository.findById(employeeId);
+}
 
     @Override
     public List<Employee> searchEmployees(String name, String email, String department, String designation) {
@@ -146,11 +104,7 @@ public Employee createEmployee(Employee employee) {
                     .filter(e -> e.getDepartment().equalsIgnoreCase(department))
                     .collect(Collectors.toList());
         }
-//        if (employmentType != null && !employmentType.isEmpty()) {
-//            result = result.stream()
-//                    .filter(e -> e.getEmploymentType().equalsIgnoreCase(employmentType))
-//                    .collect(Collectors.toList());
-//        }
+
         if (employmentType != null && !employmentType.isEmpty()) {
             EmploymentType typeEnum = EmploymentType.valueOf(employmentType.toUpperCase());
 
@@ -170,12 +124,26 @@ public Employee createEmployee(Employee employee) {
         return employeeRepository.findByEmail(email);
     }
 
-    //given by suraj
+
     @Override
     public List<Employee> getEmployeesUnderManager(Long managerId) {
         return employeeRepository.findByManagerId(managerId);
     }
 
+    //added
 
+    @Override
+    public List<Employee> getEmployeesForManager(Long managerId) {
+        List<Employee> employees = employeeRepository.findByReportingManager_Id(managerId);
+        if (employees.isEmpty()) {
+            throw new ResourceNotFoundException("No employees found under manager with ID: " + managerId);
+        }
+        return employees;
+    }
+
+    @Override
+    public List<Employee> getAllEmployees() {
+        return employeeRepository.findAll();
+    }
 }
 

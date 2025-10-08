@@ -1,13 +1,20 @@
 package com.example.User.entity;
 
 //import com.example.User.enums.EmploymentType;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "employees")
 @Data
@@ -52,26 +59,19 @@ public class Employee {    //created by hamad task2
     private String status = "ACTIVE";
 
     //Reporting Manager (linked to User table)
-//    @ManyToOne
-//    @JoinColumn(name = "reporting_manager_id", referencedColumnName = "id", nullable = true)
-//    private User reportingManager;
-//
-//    // HR Business Partner (linked to User table)
-//    @ManyToOne
-//    @JoinColumn(name = "hrbp_id", referencedColumnName = "id")
-//    private User hrbp;
-
-
+    
     // Reporting Manager (linked to User table)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reporting_manager_id", referencedColumnName = "id")
+    @JoinColumn(name = "reporting_manager_id", referencedColumnName = "id",nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @NotNull(message = "reporting_manager_id is required")
     private User reportingManager;
 
     // HR Business Partner (linked to User table)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hrbp_id", referencedColumnName = "id")
+    @JoinColumn(name = "hrbp_id", referencedColumnName = "id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @NotNull(message = "HRBP is required")
     private User hrbp;
 
 
@@ -80,5 +80,17 @@ public class Employee {    //created by hamad task2
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    //added for
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private User user;
+
+    public Long getEmployeeId() {
+
+        return employeeId;
+    }
+
 }
 
