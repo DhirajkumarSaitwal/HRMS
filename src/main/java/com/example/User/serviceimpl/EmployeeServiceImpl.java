@@ -4,6 +4,7 @@ package com.example.User.serviceimpl;
 import com.example.User.entity.Employee;
 import com.example.User.entity.EmploymentType;
 import com.example.User.entity.User;
+import com.example.User.exception.ResourceNotFoundException;
 import com.example.User.repository.EmployeeRepository;
 import com.example.User.repository.UserRepository;
 import com.example.User.service.EmployeeService;
@@ -140,6 +141,20 @@ public Employee createEmployee(Employee employee) {
         return employeeRepository.findByManagerId(managerId);
     }
 
+    //added
 
+    @Override
+    public List<Employee> getEmployeesForManager(Long managerId) {
+        List<Employee> employees = employeeRepository.findByReportingManager_Id(managerId);
+        if (employees.isEmpty()) {
+            throw new ResourceNotFoundException("No employees found under manager with ID: " + managerId);
+        }
+        return employees;
+    }
+
+    @Override
+    public List<Employee> getAllEmployees() {
+        return employeeRepository.findAll();
+    }
 }
 

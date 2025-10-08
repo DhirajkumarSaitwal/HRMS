@@ -16,7 +16,7 @@ public interface EmployeeService {  // created by hamad task2
 
     Optional<Employee> getEmployeeById(Long employeeId);
 
-    List<Employee> getAllEmployees();
+   // List<Employee> getAllEmployees();
 
     List<Employee> searchEmployees(String name, String email, String department, String designation);
 
@@ -27,4 +27,13 @@ public interface EmployeeService {  // created by hamad task2
     List<Employee> getTeamMembers(Long managerId);
 
     List<Employee> getEmployeesUnderManager(Long managerId);
+
+    //added
+
+//    @PreAuthorize("hasAnyRole('ADMIN', 'HR', 'MANAGER')")
+//    List<Employee> getEmployeesForUser(Long userId);
+
+
+    List<Employee> getEmployeesForManager(Long managerId);
+    List<Employee> getAllEmployees(); // For HR or Admin
 }

@@ -49,19 +49,22 @@ public class EmployeeController {
     }
 
     // ----------------- View Employee by ID -----------------
+
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('MANAGER') or hasRole('HR') and @employeeSecurity.isTeamMember(#id, authentication)) or (hasRole('EMPLOYEE') and @employeeSecurity.isSelf(#id, authentication))")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
+     @PreAuthorize("hasRole('ADMIN')  or hasRole('HR') ")
+     public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
         Optional<Employee> employee = employeeService.getEmployeeById(id);
-        return employee.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+       return employee.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 
 //    // ----------------- View All Employees -----------------
-    @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','HR')")
+
+    // HR/Admin: Fetch all employees
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('HR')")
     public ResponseEntity<List<Employee>> getAllEmployees() {
-        return ResponseEntity.ok(employeeService.getAllEmployees());
+    return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
 
@@ -89,9 +92,11 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.filterEmployees(status, department, employmentType));
     }
 
+
     @GetMapping("/manager/{managerId}")
     @PreAuthorize("hasRole('MANAGER')")
-    public List<Employee> getEmployeesByManager(@PathVariable Long managerId) {
-        return employeeService.getEmployeesUnderManager(managerId);
+    public ResponseEntity<List<Employee>> getEmployeesForManager(@PathVariable Long managerId) {
+        return ResponseEntity.ok(employeeService.getEmployeesForManager(managerId));
     }
+
 }

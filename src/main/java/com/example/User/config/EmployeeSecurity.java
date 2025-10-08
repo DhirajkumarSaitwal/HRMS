@@ -12,7 +12,7 @@ public class EmployeeSecurity {
 
     private final EmployeeRepository employeeRepository;
 
-    // ✅ Check if manager is viewing a team member
+    // Check if manager is viewing a team member
     public boolean isTeamMember(Long employeeId, Authentication authentication) {
         String username = authentication.getName();
 
@@ -28,7 +28,7 @@ public class EmployeeSecurity {
         return username.equalsIgnoreCase(managerEmail);
     }
 
-    // ✅ Check if employee is viewing their own record
+    // Check if employee is viewing their own record
     public boolean isSelf(Long employeeId, Authentication authentication) {
         String username = authentication.getName();
         Employee emp = employeeRepository.findById(employeeId).orElse(null);
@@ -38,4 +38,3 @@ public class EmployeeSecurity {
         return username.equalsIgnoreCase(emp.getEmail());
     }
 }
-

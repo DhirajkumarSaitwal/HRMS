@@ -1,4 +1,6 @@
 package com.example.User.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -6,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -54,4 +57,12 @@ public class User {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+    //Added by me and suraj for manager can access related employee record
+//    public Long getEmployeeId() {
+//        return getEmployeeId();
+//    }
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Employee employee;
+
 }
