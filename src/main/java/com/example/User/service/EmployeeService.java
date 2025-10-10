@@ -26,7 +26,7 @@ public interface EmployeeService {  // created by hamad task2
 
     List<Employee> getTeamMembers(Long managerId);
 
-    List<Employee> getEmployeesUnderManager(Long managerId);
+    //List<Employee> getEmployeesUnderManager(Long managerId);
 
     //added
 
@@ -36,4 +36,5 @@ public interface EmployeeService {  // created by hamad task2
 
     List<Employee> getEmployeesForManager(Long managerId);
     List<Employee> getAllEmployees(); // For HR or Admin
+
 }
