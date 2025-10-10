@@ -152,9 +152,9 @@ public Employee createEmployee(Employee employee) {
         return employees;
     }
 
-    @Override
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
-    }
+ //   @Override
+//    public List<Employee> getAllEmployees() {
+//        return employeeRepository.findAll();
+//    }
 }
 
