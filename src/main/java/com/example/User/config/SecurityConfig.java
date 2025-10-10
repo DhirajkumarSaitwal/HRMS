@@ -58,8 +58,9 @@ public class SecurityConfig {
                         .requestMatchers("/auth/admin/**").hasRole("ADMIN")
                         .requestMatchers("/auth/hr/**").hasRole("HR")
                         .requestMatchers("/auth/manager/**").hasRole("MANAGER")
+                        //.requestMatchers("/auth/employee/**").hasRole("EMPLOYEE")
                         .requestMatchers("/auth/finance/**").hasRole("FINANCE")
-                        .requestMatchers("/auth/employee/**").hasRole("EMPLOYEE")
+
                         .anyRequest().authenticated()
                 )
 

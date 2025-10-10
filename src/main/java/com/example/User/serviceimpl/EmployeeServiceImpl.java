@@ -9,6 +9,7 @@ import com.example.User.repository.EmployeeRepository;
 import com.example.User.repository.UserRepository;
 import com.example.User.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,9 +24,31 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 @Override
 public Employee createEmployee(Employee employee) {
+    if (employee.getPassword() != null) {
+        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+    }
+
+    // Create corresponding User record
+    User user = new User();
+    user.setUsername(employee.getUsername());
+    user.setPassword(employee.getPassword());
+    user.setEmail(employee.getEmail());
+    user.setFirstName(employee.getFirstName());
+    user.setLastName(employee.getLastName());
+    user.setRole(employee.getRole()); // Enum
+    user.setStatus("ACTIVE");
+
+    // Save User first
+    userRepository.save(user);
+
+    // Link this user to employee
+    employee.setUser(user);
+
     if (employee.getReportingManager() != null && employee.getReportingManager().getId() != null) {
         User manager = userRepository.findById(employee.getReportingManager().getId())
                 .orElseThrow(() -> new RuntimeException("Manager not found with ID: " + employee.getReportingManager().getId()));
@@ -135,11 +158,11 @@ public Employee createEmployee(Employee employee) {
         return employeeRepository.findByEmail(email);
     }
 
-
-    @Override
-    public List<Employee> getEmployeesUnderManager(Long managerId) {
-        return employeeRepository.findByManagerId(managerId);
-    }
+//
+//    @Override
+//    public List<Employee> getEmployeesUnderManager(Long managerId) {
+//        return employeeRepository.findByManagerId(managerId);
+//    }
 
     //added
 
@@ -152,9 +175,10 @@ public Employee createEmployee(Employee employee) {
         return employees;
     }
 
-    @Override
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
-    }
+//    @Override
+//    public List<Employee> getAllEmployees() {
+//        return employeeRepository.findAll();
+//    }
+    // adding for attendence module
 }
 
