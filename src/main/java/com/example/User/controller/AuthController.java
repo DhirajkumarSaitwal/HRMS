@@ -4,11 +4,13 @@ import com.example.User.dto.JwtResponse;
 import com.example.User.entity.User;
 import com.example.User.security.JwtUtil;
 import com.example.User.service.AuditLogService;
+import com.example.User.service.EmployeeService;
 import com.example.User.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,9 @@ public class AuthController {
 
     @Autowired
     private AuditLogService auditLogService;
+
+    @Autowired
+    private EmployeeService employeeService;
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@RequestBody User user) {

@@ -1,11 +1,13 @@
 package com.example.User.entity;
 
 //import com.example.User.enums.EmploymentType;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +17,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,6 +30,15 @@ public class Employee {    //created by hamad task2
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long employeeId;
+    @NotBlank
+    @Size(min = 3, max = 50)
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @NotBlank
+    @Size(min = 6)
+    @Column(nullable = false)
+    private String password;
 
     @Column(nullable = false)
     private String firstName;
@@ -60,6 +70,12 @@ public class Employee {    //created by hamad task2
     private EmploymentType employmentType;
 
     private String status = "ACTIVE";
+    //added for attendence module
+    // Added Role Enum Field
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+    //-------------------------
 
     // Reporting Manager (linked to User table)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -91,6 +107,16 @@ public class Employee {    //created by hamad task2
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Document> documents;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    //changes becouse of attendence module
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("employee")
+    private List<Attendance> attendances;
+    //--------------------------------
 
     public Long getId() {
         return employeeId;
