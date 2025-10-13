@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 // Created by hamad for task2
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
@@ -43,4 +44,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Employee> findByManagerId(Long managerId);
 
 
+    List<Employee> findByReportingManager_Id(Long managerId);
+
+    List<Employee> findByReportingManagerId(Long managerId);
+
+    Optional<Employee> findByUser_Id(Long userId);
 }

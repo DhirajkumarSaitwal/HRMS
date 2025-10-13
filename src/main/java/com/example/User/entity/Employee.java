@@ -95,5 +95,9 @@ public class Employee {    //created by hamad task2
     public Long getId() {
         return employeeId;
     }
+
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 }
 
