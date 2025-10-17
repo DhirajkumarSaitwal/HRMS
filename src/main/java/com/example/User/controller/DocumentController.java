@@ -2,7 +2,6 @@ package com.example.User.controller;
 
 
 import com.example.User.entity.Document;
-import com.example.User.entity.DocumentStatus;
 import com.example.User.exception.ResourceNotFoundException;
 import com.example.User.service.DocumentService;
 import org.springframework.core.io.Resource;
@@ -23,6 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/documents")
+@CrossOrigin("*")
 public class DocumentController {
 
     private final DocumentService documentService;

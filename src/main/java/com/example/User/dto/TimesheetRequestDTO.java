@@ -1,6 +1,5 @@
 package com.example.User.dto;
 
-import com.example.User.entity.Employee;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,8 +18,6 @@ public class TimesheetRequestDTO {
     @NotNull(message = "employeeId is mandatory")
     private Long employeeId;
 
-//    private Employee employee;
-
     @NotBlank(message = "projectCode is mandatory")
     private String projectCode;
 
@@ -33,10 +30,6 @@ public class TimesheetRequestDTO {
     @NotNull(message = "hoursWorked is mandatory")
     @DecimalMin(value = "0.0", inclusive = false, message = "hoursWorked must be > 0")
     private Double hoursWorked;
-
-//    @NotNull(message = "approvedBy is mandatory")  // ✅ fixed
-//    private Long approvedBy;
-
 
     private String remarks;
 
