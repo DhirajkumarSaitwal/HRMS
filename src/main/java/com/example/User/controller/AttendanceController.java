@@ -20,10 +20,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/attendance")
 @CrossOrigin("*")
-public class AttendanceController  {  //created by hamad for attendence module
+public class AttendanceController {  //created by hamad for attendence module
 
     @Autowired
-    private  AttendanceService attendanceService;
+    private AttendanceService attendanceService;
     @Autowired
     private UserRepository userRepository;
 
