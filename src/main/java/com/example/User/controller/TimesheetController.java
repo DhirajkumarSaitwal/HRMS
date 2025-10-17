@@ -1,21 +1,16 @@
 package com.example.User.controller;
 
-
 import com.example.User.dto.TimesheetRequestDTO;
 import com.example.User.entity.Timesheet;
-import com.example.User.entity.User;
 import com.example.User.exception.TimesheetException;
-import com.example.User.repository.TimesheetRepository;
 import com.example.User.repository.UserRepository;
 import com.example.User.service.TimesheetService;
-import com.example.User.serviceimpl.TimesheetServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/timesheets")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class TimesheetController {
 
     @Autowired
@@ -45,7 +41,6 @@ public class TimesheetController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error submitting timesheet");
         }
     }
-
 
 
     @GetMapping("/employee/{employeeId}")
@@ -95,7 +90,6 @@ public class TimesheetController {
         List<Timesheet> result = timesheetService.listPendingForManager(managerId);
         return ResponseEntity.ok(result);
     }
-
 
 
 }

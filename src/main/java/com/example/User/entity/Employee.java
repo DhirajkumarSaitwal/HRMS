@@ -25,7 +25,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Employee {    //created by hamad task2
+public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,16 +70,14 @@ public class Employee {    //created by hamad task2
     private EmploymentType employmentType;
 
     private String status = "ACTIVE";
-    //added for attendence module
-    // Added Role Enum Field
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
-    //-------------------------
 
     // Reporting Manager (linked to User table)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reporting_manager_id", referencedColumnName = "id",nullable = false)
+    @JoinColumn(name = "reporting_manager_id", referencedColumnName = "id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @NotNull(message = "reporting_manager_id is required")
     private User reportingManager;
@@ -101,9 +99,6 @@ public class Employee {    //created by hamad task2
         return firstName + (lastName != null ? " " + lastName : "");
     }
 
-//    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Document> documents = new ArrayList<>();
-
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Document> documents;
@@ -112,18 +107,14 @@ public class Employee {    //created by hamad task2
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    //changes becouse of attendence module
+
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("employee")
     private List<Attendance> attendances;
-    //--------------------------------
 
     public Long getId() {
         return employeeId;
     }
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
 }
 
