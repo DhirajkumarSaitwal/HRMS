@@ -61,6 +61,7 @@ public class SecurityConfig {
                         //.requestMatchers("/auth/employee/**").hasRole("EMPLOYEE")
                         .requestMatchers("/auth/finance/**").hasRole("FINANCE")
 
+
                         .anyRequest().authenticated()
                 )
 
