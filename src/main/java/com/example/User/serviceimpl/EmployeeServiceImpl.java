@@ -85,10 +85,10 @@ public Employee createEmployee(Employee employee) {
         return employeeRepository.findById(employeeId);
     }
 
-    @Override
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
-    }
+//    @Override
+//    public List<Employee> getAllEmployees() {
+//        return employeeRepository.findAll();
+//    }
 
     @Override
     public List<Employee> getTeamMembers(Long managerId) {
@@ -175,7 +175,12 @@ public Employee createEmployee(Employee employee) {
         return employees;
     }
 
- //   @Override
+    @Override
+    public List<Employee> getAllEmployees() {
+        return null;
+    }
+
+    //   @Override
 //    public List<Employee> getAllEmployees() {
 //        return employeeRepository.findAll();
 //    }
