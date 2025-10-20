@@ -1,7 +1,6 @@
 package com.example.User.service;
 
 import com.example.User.dto.TimesheetRequestDTO;
-import com.example.User.entity.Employee;
 import com.example.User.entity.Timesheet;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
