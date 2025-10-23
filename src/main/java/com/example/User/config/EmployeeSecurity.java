@@ -1,14 +1,12 @@
 package com.example.User.config;
 
-import com.example.User.entity.Employee;
-import com.example.User.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 // Created by hamad task2
 @Component("employeeSecurity") // 👈 this name must match the one used in @PreAuthorize
 @RequiredArgsConstructor
-public class EmployeeSecurity {
+public class  EmployeeSecurity {
 
     private final EmployeeRepository employeeRepository;
 

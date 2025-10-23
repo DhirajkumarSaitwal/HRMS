@@ -2,10 +2,8 @@ package com.example.User.serviceimpl;
 
 import com.example.User.entity.Document;
 import com.example.User.entity.DocumentStatus;
-import com.example.User.entity.Employee;
 import com.example.User.exception.ResourceNotFoundException;
 import com.example.User.repository.DocumentRepository;
-import com.example.User.repository.EmployeeRepository;
 import com.example.User.service.DocumentService;
 import com.example.User.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +19,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 
 @Service
