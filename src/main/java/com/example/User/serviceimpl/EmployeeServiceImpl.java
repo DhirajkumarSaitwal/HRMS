@@ -179,10 +179,5 @@ public Employee createEmployee(Employee employee) {
     public List<Employee> getAllEmployees() {
         return null;
     }
-
-    //   @Override
-//    public List<Employee> getAllEmployees() {
-//        return employeeRepository.findAll();
-//    }
 }
 
