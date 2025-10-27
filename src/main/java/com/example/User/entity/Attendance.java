@@ -1,7 +1,7 @@
 package com.example.User.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,9 +30,15 @@ public class Attendance { //created by hamad for attendence module
     @GeneratedValue
     private Long attendanceId;
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "employee_id",  nullable = false)
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "attendances"})
+//    @JsonBackReference
+//    private Employee employee;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id",  nullable = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "attendances"})
+    @JoinColumn(name = "employee_id", nullable = false)
+    @JsonBackReference
     private Employee employee;
 
     @Column(nullable = false)
