@@ -12,7 +12,7 @@ public interface ComplianceService {
     ComplianceResponse updateCompliance(Long id, ComplianceRequest request);
     List<ComplianceResponse> getAllCompliances();
     void deleteCompliance(Long id);
-//
     EmployeeComplianceResponse assignCompliance(EmployeeComplianceRequest request);
     List<EmployeeComplianceResponse> getEmployeeCompliances(Long employeeId);
+    ComplianceResponse getById(Long id);
 }

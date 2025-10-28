@@ -11,7 +11,7 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     List<Document> findByStatus(String uploadedBy);
     Document findByDocumentId(Long documentId);
     List<Document> findByEmployeeIdInAndDocumentTypeIn(List<Long> employeeIds, List<String> documentTypes);
-
+    void deleteByEmployeeEmployeeId(Long employeeId);
 
 
 

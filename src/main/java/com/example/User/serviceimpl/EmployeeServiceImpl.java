@@ -1,13 +1,14 @@
 package com.example.User.serviceimpl;
 
 
-import com.example.User.entity.Employee;
-import com.example.User.entity.EmploymentType;
-import com.example.User.entity.User;
+import com.example.User.entity.*;
 import com.example.User.exception.ResourceNotFoundException;
+import com.example.User.repository.AttendanceRepository;
+import com.example.User.repository.DocumentRepository;
 import com.example.User.repository.EmployeeRepository;
 import com.example.User.repository.UserRepository;
 import com.example.User.service.EmployeeService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AttendanceRepository attendanceRepository;
+    @Autowired
+    private DocumentRepository documentRepository;
 
 @Override
 public Employee createEmployee(Employee employee) {
@@ -64,21 +70,77 @@ public Employee createEmployee(Employee employee) {
     return employeeRepository.save(employee);
 }
 
+@Transactional
+@Override
+public Employee updateEmployee(Long employeeId, Employee employee) {
+    Optional<Employee> optionalEmployee = employeeRepository.findById(employeeId);
 
-    @Override
-    public Employee updateEmployee(Long employeeId, Employee employee) {
-        Optional<Employee> existing = employeeRepository.findById(employeeId);
-        if (existing.isPresent()) {
-            employee.setEmployeeId(employeeId);
-            return employeeRepository.save(employee);
+    if (optionalEmployee.isPresent()) {
+        Employee existingEmployee = optionalEmployee.get();
+
+        // ----- Update simple fields -----
+        existingEmployee.setUsername(employee.getUsername());
+        existingEmployee.setPassword(employee.getPassword());
+        existingEmployee.setFirstName(employee.getFirstName());
+        existingEmployee.setLastName(employee.getLastName());
+        existingEmployee.setDateOfBirth(employee.getDateOfBirth());
+        existingEmployee.setGender(employee.getGender());
+        existingEmployee.setContactNumber(employee.getContactNumber());
+        existingEmployee.setEmail(employee.getEmail());
+        existingEmployee.setAddress(employee.getAddress());
+        existingEmployee.setBloodGroup(employee.getBloodGroup());
+        existingEmployee.setDateOfJoining(employee.getDateOfJoining());
+        existingEmployee.setDesignation(employee.getDesignation());
+        existingEmployee.setDepartment(employee.getDepartment());
+        existingEmployee.setEmploymentType(employee.getEmploymentType());
+        existingEmployee.setStatus(employee.getStatus());
+        existingEmployee.setRole(employee.getRole());
+        existingEmployee.setReportingManager(employee.getReportingManager());
+        existingEmployee.setHrbp(employee.getHrbp());
+        existingEmployee.setUser(employee.getUser());
+
+        // ----- Update child collection: attendances -----
+        if (employee.getAttendances() != null) {
+            existingEmployee.getAttendances().clear(); // clear old
+            for (Attendance att : employee.getAttendances()) {
+                att.setEmployee(existingEmployee); // maintain bidirectional
+                existingEmployee.getAttendances().add(att);
+            }
         }
-        return null; // can throw custom exception
+
+        // ----- Update child collection: documents -----
+        if (employee.getDocuments() != null) {
+            existingEmployee.getDocuments().clear(); // clear old
+            for (Document doc : employee.getDocuments()) {
+                doc.setEmployee(existingEmployee);
+                existingEmployee.getDocuments().add(doc);
+            }
+        }
+
+        return employeeRepository.save(existingEmployee);
     }
 
-    @Override
-    public void deleteEmployee(Long employeeId) {
-        employeeRepository.deleteById(employeeId);
+    // Not found - throw custom exception or return null
+    return null;
+}
+
+@Transactional
+@Override
+public void deleteEmployee(Long employeeId) {
+    if (!employeeRepository.existsById(employeeId)) {
+        throw new RuntimeException("Employee not found");
     }
+
+    // delete child records first
+    attendanceRepository.deleteByEmployeeEmployeeId(employeeId);
+    documentRepository.deleteByEmployeeEmployeeId(employeeId);
+
+    // then delete employee
+    employeeRepository.deleteById(employeeId);
+}
+
+
+
 
     @Override
     public Optional<Employee> getEmployeeById(Long employeeId) {
