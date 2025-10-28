@@ -241,10 +241,5 @@ public void deleteEmployee(Long employeeId) {
     public List<Employee> getAllEmployees() {
         return null;
     }
-
-    //   @Override
-//    public List<Employee> getAllEmployees() {
-//        return employeeRepository.findAll();
-//    }
 }
 
