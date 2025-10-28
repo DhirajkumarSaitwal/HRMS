@@ -106,6 +106,13 @@ public class ComplianceServiceImpl implements ComplianceService {
         return empComplianceRepo.findByEmployeeId(employeeId)
                 .stream().map(EmployeeComplianceResponse::fromEntity).collect(Collectors.toList());
     }
+
+    @Override
+    public ComplianceResponse getById(Long id) {
+        ComplianceMaster compliance = complianceRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Compliance not found with id: " + id));
+        return ComplianceResponse.fromEntity(compliance);
     }
+}
 
 

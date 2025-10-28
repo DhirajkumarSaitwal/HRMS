@@ -1,7 +1,5 @@
 package com.example.User.entity;
 
-//import com.example.User.enums.EmploymentType;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -17,6 +15,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,6 +29,7 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long employeeId;
+
     @NotBlank
     @Size(min = 3, max = 50)
     @Column(unique = true, nullable = false)
@@ -76,14 +76,14 @@ public class Employee {
     private Role role;
 
     // Reporting Manager (linked to User table)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "reporting_manager_id", referencedColumnName = "id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @NotNull(message = "reporting_manager_id is required")
     private User reportingManager;
 
     // HR Business Partner (linked to User table)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "hrbp_id", referencedColumnName = "id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @NotNull(message = "HRBP is required")
@@ -99,22 +99,22 @@ public class Employee {
         return firstName + (lastName != null ? " " + lastName : "");
     }
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    // ----- Documents -----
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<Document> documents;
+    private List<Document> documents = new ArrayList<>();
 
+    // ----- User -----
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-
+    // ----- Attendances -----
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("employee")
-    private List<Attendance> attendances;
+    private List<Attendance> attendances = new ArrayList<>();
 
     public Long getId() {
         return employeeId;
     }
-
 }
-

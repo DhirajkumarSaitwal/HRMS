@@ -7,13 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
-public interface AttendanceRepository extends JpaRepository<Attendance, UUID> {
+public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
     //created by hamad for attendence module
 
     Optional<Attendance> findByEmployeeAndAttendanceDate(Employee employee, LocalDate date);
     List<Attendance> findByEmployee_EmployeeId(Long employeeId);
     //added by for checkin
-   // List<Attendance> findByEmployeeIdAndDateBetween(Long employeeId, LocalDate startDate, LocalDate endDate);
+    void deleteByEmployeeEmployeeId(Long employeeId);
 }

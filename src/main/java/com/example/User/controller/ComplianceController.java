@@ -52,4 +52,8 @@ public class ComplianceController {
     public ResponseEntity<List<EmployeeComplianceResponse>> getEmployeeCompliances(@PathVariable Long employeeId) {
         return ResponseEntity.ok(service.getEmployeeCompliances(employeeId));
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<ComplianceResponse> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getById(id));
+    }
 }
