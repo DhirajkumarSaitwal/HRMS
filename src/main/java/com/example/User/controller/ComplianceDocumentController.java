@@ -63,12 +63,14 @@ public ResponseEntity<Resource> getDocument(@PathVariable Long documentId) {
         return ResponseEntity.noContent().build();
     }
     @PostMapping("/verify/{documentId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('HR')")
     public ResponseEntity<ComplianceDocumentResponseDto> verifyDocument(
             @PathVariable Long documentId,
             @RequestParam String verifiedBy) {
         return ResponseEntity.ok(service.verifyDocument(documentId, verifiedBy));
     }
     @GetMapping("/expired")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('HR')")
     public ResponseEntity<List<ComplianceDocumentResponseDto>> getExpiredDocuments() {
         return ResponseEntity.ok(service.getExpiredDocuments());
     }
