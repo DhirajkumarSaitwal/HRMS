@@ -1,7 +1,6 @@
 package com.example.User.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -15,29 +14,51 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name="audit_log")
+@Builder
 public class AuditLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long auditLogId;
 
-
-    @NotBlank
     @Column(nullable = false)
-    private String username= "SYSTEM";
+    private String username;
 
     @Column(nullable = false)
     private String action;
 
- // this Two entity added new
     @Column(nullable = false)
-    private String performedBy;  // username
+    private String performedBy;
 
-    @Column(nullable = false)
+    @Column(length = 1000)
     private String details;
 
+    @Column
+    private String entityName;
+
+    @Column
+    private String entityId;
+
+    @Column(length = 4000)
+    private String oldValue;
+
+    @Column(length = 4000)
+    private String newValue;
+
+    @Column(length = 255)
+    private String changeSummary;
+
+    @Column(length = 45)
+    private String ipAddress;
+
+    @Column(length = 255)
+    private String userAgent;
+
+    @Column(length = 255)
+    private String remarks;
+
     @Column(nullable = false)
-    private LocalDateTime timestamp = LocalDateTime.now();
+    private LocalDateTime timestamp;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
