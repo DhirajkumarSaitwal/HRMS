@@ -195,7 +195,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     public DepartmentResponseDto updateDepartmentStatus(Long id, String status, String performedBy) {
         Department department = departmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Department not found with id " + id));
-        DepartmentStatus oldStatus = department.getStatus();
 
         DepartmentStatus newStatus = DepartmentStatus.valueOf(status.toUpperCase());
         department.setStatus(newStatus);
@@ -206,15 +205,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         auditLogService.saveAudit(
                 performedBy,
                 "DEPARTMENT_STATUS_UPDATE",
-                "Department '" + department.getName() + "' status changed",
-                "Department",
-                department.getDepartmentId().toString(),
-                "Status:" + oldStatus,
-                "Status:" + newStatus,
-                "Department status updated",
-                null,
-                null,
-                null
+                "Department '" + department.getName() + "' status changed to " + newStatus
         );
 
         return mapToDto(department);
