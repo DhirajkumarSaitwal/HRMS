@@ -61,8 +61,4 @@ public class EmployeePayrollController {
         service.deletePayroll(id);
         return ResponseEntity.ok(" Payroll record deleted successfully with ID: " + id);
     }
-
-
-
-
 }
