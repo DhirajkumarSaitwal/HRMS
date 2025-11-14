@@ -1,5 +1,6 @@
 package com.example.User.controller;
 
+import com.example.User.dto.EmployeeResponseDTO;
 import com.example.User.entity.Employee;
 import com.example.User.repository.EmployeeRepository;
 import com.example.User.service.EmployeeService;
@@ -64,7 +65,7 @@ public class EmployeeController {
     // HR/Admin: Fetch all employees
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN') or hasRole('HR')")
-    public ResponseEntity<List<Employee>> getAllEmployees() {
+    public ResponseEntity<List<EmployeeResponseDTO>> getAllEmployees() {
     return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 

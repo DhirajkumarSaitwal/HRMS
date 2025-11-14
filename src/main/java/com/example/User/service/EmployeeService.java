@@ -1,5 +1,6 @@
 package com.example.User.service;
 
+import com.example.User.dto.EmployeeResponseDTO;
 import com.example.User.entity.Employee;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,6 @@ public interface EmployeeService {  // created by hamad task2
 
 
     List<Employee> getEmployeesForManager(Long managerId);
-    List<Employee> getAllEmployees(); // For HR or Admin
+    List<EmployeeResponseDTO> getAllEmployees(); // For HR or Admin
 
 }

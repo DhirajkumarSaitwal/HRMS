@@ -1,6 +1,7 @@
 package com.example.User.serviceimpl;
 
 
+import com.example.User.dto.EmployeeResponseDTO;
 import com.example.User.entity.*;
 import com.example.User.exception.ResourceNotFoundException;
 import com.example.User.repository.AttendanceRepository;
@@ -32,6 +33,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private AttendanceRepository attendanceRepository;
     @Autowired
     private DocumentRepository documentRepository;
+
 
 @Override
 public Employee createEmployee(Employee employee) {
@@ -151,6 +153,13 @@ public void deleteEmployee(Long employeeId) {
 //    public List<Employee> getAllEmployees() {
 //        return employeeRepository.findAll();
 //    }
+@Override
+public List<EmployeeResponseDTO> getAllEmployees() {
+    return employeeRepository.findAll()
+            .stream()
+            .map(this::toEmployeeDTO)
+            .collect(Collectors.toList());
+}
 
     @Override
     public List<Employee> getTeamMembers(Long managerId) {
@@ -237,9 +246,40 @@ public void deleteEmployee(Long employeeId) {
         return employees;
     }
 
-    @Override
-    public List<Employee> getAllEmployees() {
-        return null;
+//    @Override
+//    public List<Employee> getAllEmployees() {
+//        return null;
+//    }
+
+
+    private EmployeeResponseDTO toEmployeeDTO(Employee emp) {
+
+        EmployeeResponseDTO dto = new EmployeeResponseDTO();
+
+        dto.setEmployeeId(emp.getEmployeeId());
+        dto.setUsername(emp.getUsername());
+        dto.setFirstName(emp.getFirstName());
+        dto.setLastName(emp.getLastName());
+        dto.setName(emp.getName());
+        dto.setEmail(emp.getEmail());
+        dto.setContactNumber(emp.getContactNumber());
+
+        dto.setDesignation(emp.getDesignation());
+        dto.setDepartment(emp.getDepartment());
+        dto.setEmploymentType(emp.getEmploymentType().name());
+        dto.setStatus(emp.getStatus());
+
+        if (emp.getReportingManager() != null) {
+            dto.setReportingManagerId(emp.getReportingManager().getId());
+            //dto.setReportingManagerName(String.valueOf(emp.getReportingManager().getId()));
+        }
+
+        if (emp.getHrbp() != null) {
+            dto.setHrbpId(emp.getHrbp().getId());
+
+        }
+
+        return dto;
     }
 }
 
