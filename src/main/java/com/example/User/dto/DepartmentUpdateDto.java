@@ -20,7 +20,7 @@ public class DepartmentUpdateDto {
     @Size(max = 2000)
     private String description;
 
-    @NotBlank(message = "Status is required")
+   @NotBlank(message = "Status is required")
     @Size(max = 2000)
     private String status;
 

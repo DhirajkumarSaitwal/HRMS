@@ -13,4 +13,3 @@ public class LeaveTypeDTO {
     private Boolean encashable;
     private Boolean isActive;
 }
-

@@ -1,5 +1,4 @@
 package com.example.User.repository;
-
 import com.example.User.entity.SalaryStructureMaster;
 import org.springframework.data.jpa.repository.JpaRepository;
 

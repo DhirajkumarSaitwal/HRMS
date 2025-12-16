@@ -29,7 +29,7 @@ public class AttendanceController {  //created by hamad for attendence module
 
     // ----------Employee Clock-In---------------
     @PostMapping("/clock-in")
-    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<Attendance> clockIn(@RequestBody Map<String, String> request) {
         //new changes for emoloyee also available in user
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

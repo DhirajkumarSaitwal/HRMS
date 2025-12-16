@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "salary_structure_master")
 public class SalaryStructureMaster {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long structureId;
@@ -29,17 +31,22 @@ public class SalaryStructureMaster {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String createdBy;
-    private String updatedBy;
+
+    private String createdBy;   // Added by Harshada
+    private String updatedBy;   // Added by Harshada
+
+    @Column(nullable = false)
+    private Boolean isActive = true;   // Added by Harshada
 
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
+        this.createdBy = "ADMIN";     // Added by Harshada
     }
 
     @PreUpdate
     public void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+        this.updatedBy = "ADMIN";      // Added by Harshada
     }
-
 }

@@ -1,10 +1,8 @@
 package com.example.User.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,6 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Employee {
 
     @Id
@@ -46,7 +45,6 @@ public class Employee {
     private String lastName;
 
     private LocalDate dateOfBirth;
-
     private String gender;
 
     @Column(unique = true, nullable = false)
@@ -56,13 +54,11 @@ public class Employee {
     private String email;
 
     private String address;
-
     private String bloodGroup;
 
     private LocalDate dateOfJoining;
 
     private String designation;
-
     private String department;
 
     @Enumerated(EnumType.STRING)
@@ -75,18 +71,16 @@ public class Employee {
     @Column(nullable = false)
     private Role role;
 
-    // Reporting Manager (linked to User table)
+    // ---- Reporting Manager ----
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "reporting_manager_id", referencedColumnName = "id", nullable = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @NotNull(message = "reporting_manager_id is required")
+    @JsonIgnoreProperties({"employee", "employees"})
     private User reportingManager;
 
-    // HR Business Partner (linked to User table)
+    // ---- HRBP ----
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "hrbp_id", referencedColumnName = "id", nullable = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @NotNull(message = "HRBP is required")
+    @JsonIgnoreProperties({"employee", "employees"})
     private User hrbp;
 
     @CreationTimestamp
@@ -99,17 +93,18 @@ public class Employee {
         return firstName + (lastName != null ? " " + lastName : "");
     }
 
-    // ----- Documents -----
+    // ---- Documents ----
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonIgnoreProperties("employee")
     private List<Document> documents = new ArrayList<>();
 
-    // ----- User -----
+    // ---- User ----
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("employee")
     private User user;
 
-    // ----- Attendances -----
+    // ---- Attendances ----
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("employee")
     private List<Attendance> attendances = new ArrayList<>();

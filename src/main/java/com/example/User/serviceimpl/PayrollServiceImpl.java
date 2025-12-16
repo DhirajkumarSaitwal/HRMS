@@ -14,6 +14,7 @@ import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 @Service
@@ -38,7 +39,9 @@ public class PayrollServiceImpl implements PayrollService {
         structure.setVariablePay(dto.getVariablePay());
         structure.setOtherAllowances(dto.getOtherAllowances());
         structure.setDeductions(dto.getDeductions());
-        structure.setCreatedBy(dto.getCreatedBy());
+        structure.setCreatedBy("ADMIN");          // Added by Harshada
+        structure.setIsActive(true);              // Added by Harshada
+
         structureRepo.save(structure);
 
         return mapToStructureResponse(structure);
@@ -48,12 +51,13 @@ public class PayrollServiceImpl implements PayrollService {
     public SalaryStructureResponseDto updateSalaryStructure(Long id, SalaryStructureRequestDto dto) {
         SalaryStructureMaster structure = structureRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Structure not found"));
+        structure.setStructureName(dto.getStructureName());  // Added by Harshada
         structure.setBasicPay(dto.getBasicPay());
         structure.setHra(dto.getHra());
         structure.setVariablePay(dto.getVariablePay());
         structure.setOtherAllowances(dto.getOtherAllowances());
         structure.setDeductions(dto.getDeductions());
-        structure.setUpdatedBy(dto.getCreatedBy());
+        structure.setUpdatedBy("ADMIN");          // Added by Harshada
         structureRepo.save(structure);
         return mapToStructureResponse(structure);
     }
@@ -81,8 +85,12 @@ public class PayrollServiceImpl implements PayrollService {
         payroll.setGrossSalary(gross);
         payroll.setTotalDeductions(structure.getDeductions());
         payroll.setNetSalary(net);
-        payroll.setPaymentStatus(EmployeePayroll.PaymentStatus.Pending);
+        payroll.setPaymentStatus(EmployeePayroll.PaymentStatus.PENDING);
         payroll.setBankReferenceNo(dto.getBankReferenceNo());
+        payroll.setCreatedBy("ADMIN");// Added by Harshada
+        payroll.setUpdatedBy("ADMIN"); //Added by Harshada
+        payroll.setIsActive(true);                // Added by Harshada
+        payroll.setPaymentDate(LocalDate.now());   // Added by Harshada
         payrollRepo.save(payroll);
 
         return mapToPayrollResponse(payroll);

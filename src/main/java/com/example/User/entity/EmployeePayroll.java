@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -20,8 +21,8 @@ public class EmployeePayroll {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long payrollId;
 
-    private Long employeeId; // FK to employee_master
-    private String month; // e.g., Apr-2025
+    private Long employeeId;
+    private String month;
 
     @ManyToOne
     @JoinColumn(name = "structure_id")
@@ -40,18 +41,29 @@ public class EmployeePayroll {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    @Column(nullable = false)
+    private Boolean isActive = true;        // Added by Harshada
+
+    private String createdBy;               // Added by Harshada
+    private String updatedBy;               // Added by Harshada
+
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
+        this.createdBy = "ADMIN";          // Added by Harshada
     }
 
     @PreUpdate
     public void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+        this.updatedBy = "ADMIN";          // Added by Harshada
     }
 
+
     public enum PaymentStatus {
-        Pending, Processed, Failed
+        PENDING,
+        PROCESSED,
+        FAILED
     }
 
 }

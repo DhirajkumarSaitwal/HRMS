@@ -39,10 +39,7 @@ public class BenefitMaster {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    private String createdBy;
-    private String updatedBy;
-
-    public void setActive(boolean b){
-    }
+    private String createdBy = "ADMIN";  // added by Harshada
+    private String updatedBy = "ADMIN";  // added by Harshada
 
 }

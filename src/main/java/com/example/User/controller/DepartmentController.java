@@ -69,12 +69,20 @@ public class DepartmentController {
     }
 
     // Soft delete (mark inactive)
-    @PreAuthorize("hasRole('USER') or hasRole('HR')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('HR')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {
         departmentService.softDeleteDepartment(id);
         return ResponseEntity.ok("Department deactivated successfully");
     }
+
+//    @DeleteMapping("/{id}")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('HR') or hasRole('USER')")
+//    public ResponseEntity<DepartmentResponseDto> delete(@PathVariable("id") Long id) {
+//        DepartmentResponseDto updated = departmentService.softDeleteDepartment(id);
+//        return ResponseEntity.ok(updated);
+//    }
+
 
     // Added new
     // Search Departments by name or code

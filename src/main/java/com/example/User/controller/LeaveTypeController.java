@@ -18,7 +18,7 @@ public class LeaveTypeController {
 
     // 1️. Create Leave Type
     @PostMapping
-    @PreAuthorize("hasRole('HR')")
+    @PreAuthorize("hasAnyRole('HR', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<LeaveType> createLeaveType(@RequestBody LeaveType leaveType) {
         LeaveType created = leaveTypeService.createLeaveType(leaveType);
         return ResponseEntity.ok(created);
@@ -26,7 +26,7 @@ public class LeaveTypeController {
 
     // 2️. Get All Leave Types
     @GetMapping
-    @PreAuthorize("hasAnyRole('EMPLOYEE', 'HR', 'MANAGER')")
+    @PreAuthorize("hasAnyRole('EMPLOYEE', 'HR', 'MANAGER','ADMIN')")
     public ResponseEntity<List<LeaveType>> getAllLeaveTypes() {
         List<LeaveType> types = leaveTypeService.getAllLeaveTypes();
         return ResponseEntity.ok(types);
